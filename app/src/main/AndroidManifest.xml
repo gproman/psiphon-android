@@ -75,6 +75,12 @@
             android:name=".psiphonlibrary.MoreOptionsPreferenceActivity"
             android:label="@string/app_name">
         </activity>
+        <activity android:name=".psiphonlibrary.StandUpMainActivity"
+            android:label="Psiphon">
+        </activity>
+        <activity android:name=".psiphonlibrary.StandUpInstallActivity"
+            android:label="Psiphon">
+        </activity>
         <service
             android:name=".psiphonlibrary.TunnelService"
             android:label="@string/app_name"

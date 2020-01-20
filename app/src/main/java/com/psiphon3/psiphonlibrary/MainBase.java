@@ -789,6 +789,12 @@ public abstract class MainBase {
             doAbout();
         }
 
+        public void onStandUpClick(View v) {
+//            startActivityForResult(new Intent(this, StandUpMainActivity.class), REQUEST_CODE_PREFERENCE);
+            Intent standUpIntent = new Intent(this, StandUpMainActivity.class);
+            startActivity(standUpIntent);
+        }
+
         private final AdapterView.OnItemSelectedListener regionSpinnerOnItemSelected = new AdapterView.OnItemSelectedListener() {
 
             @Override
