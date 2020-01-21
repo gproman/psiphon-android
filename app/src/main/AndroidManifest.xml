@@ -77,10 +77,10 @@
             android:label="@string/app_name">
         </activity>
         <activity android:name=".psiphonlibrary.StandUpMainActivity"
-            android:label="Psiphon">
+            android:label="Psiphon StandUp">
         </activity>
         <activity android:name=".psiphonlibrary.StandUpInstallActivity"
-            android:label="Psiphon">
+            android:label="Psiphon StandUp">
         </activity>
         <service
             android:name=".psiphonlibrary.TunnelService"

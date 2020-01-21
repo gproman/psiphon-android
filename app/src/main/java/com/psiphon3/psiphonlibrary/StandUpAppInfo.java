@@ -5,11 +5,13 @@ public class StandUpAppInfo {
     public final int icon;
     public final boolean installed;
     public final String blurb;
+    public final String packageName;
 
-    public StandUpAppInfo(String name, int icon, boolean installed, String blurb) {
+    public StandUpAppInfo(String name, int icon, boolean installed, String blurb, String packageName) {
         this.name = name;
         this.icon = icon;
         this.installed = installed;
         this.blurb = blurb;
+        this.packageName = packageName;
     }
 }

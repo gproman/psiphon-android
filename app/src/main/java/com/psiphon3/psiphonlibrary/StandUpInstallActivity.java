@@ -1,10 +1,12 @@
 package com.psiphon3.psiphonlibrary;
 
+import android.annotation.SuppressLint;
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,6 +17,7 @@ import android.os.Environment;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +39,7 @@ public class StandUpInstallActivity extends AppCompatActivity {
     TextView appBlurb;
 
 
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,37 +54,62 @@ public class StandUpInstallActivity extends AppCompatActivity {
 
         appBlurb = (TextView) findViewById(R.id.blurb);
         appBlurb.setText(intent.getStringExtra("blurb"));
+
+        Button installButton = (Button) findViewById(R.id.installButton);
+
+        PackageManager packageManager = getApplicationContext().getPackageManager();
+        if (StandUpMainActivity.isPackageInstalled(intent.getStringExtra("package"), packageManager)) {
+            installButton.setText(R.string.open);
+        } else {
+            installButton.setText(R.string.install);
+        }
+    }
+
+    private String getApkFilename(String appName) {
+        String output = "";
+        switch (appName) {
+            case "Briar":
+                output = "briar.apk";
+                break;
+            case "Serval":
+                output = "servalproject.apk";
+                break;
+            case "Psiphon Mesh":
+                output = "psiphon_mesh.apk";
+                break;
+            case "Meshenger":
+                output = "meshenger.apk";
+                break;
+        }
+        return output;
+    }
+
+    private void openMeshApp(String packageName) {
+        Intent LaunchIntent = getPackageManager().getLaunchIntentForPackage(packageName);
+        startActivity(LaunchIntent);
     }
 
     public void onStandUpInstall(View v) {
-        Intent intent = getIntent(); // get Intent which we set from Previous Activity
+        Intent intent = getIntent();
+        PackageManager packageManager = getApplicationContext().getPackageManager();
 
-        Toast.makeText(this, getFilesDir().toString(), Toast.LENGTH_LONG).show();
-        final Uri uri = Uri.parse(getFilesDir().toString() + "/briar.apk");
-//        Toast.makeText(this, intent.getStringExtra("name") + " installing...", Toast.LENGTH_LONG).show();
-//
-
-        String filename = null;
-        switch (intent.getStringExtra("name")) {
-            case "Briar":
-                filename = "/briar.apk";
-                break;
-            case "Serval":
-                filename = "/firechat.apk";
-                break;
-            case "Psiphon Mesh":
-                filename = "/psiphonmesh.apk";
-                break;
-            case "Meshenger":
-                filename = "/meshenger.apk";
-                break;
+        if (StandUpMainActivity.isPackageInstalled(intent.getStringExtra("package"), packageManager)) {
+            openMeshApp(intent.getStringExtra("package"));
+            finish();
+            startActivity(getIntent());
+            return;
         }
+        String appName = intent.getStringExtra("name");
+        if (appName.equals("Psiphon Mesh")) {
+            return;
+        }
+        String apkName = getApkFilename(appName);
+        File apkFile = new File(getFilesDir(), "/" + apkName);
 
-        File apkFile = new File(getFilesDir(), filename);
         try {
-            InputStream apkStream = getAssets().open("briar.apk");
+            InputStream apkStream = getAssets().open(apkName);
             FileOutputStream apkOutputStream = new FileOutputStream(apkFile);
-            byte[] buffer = new byte[1024];
+            byte[] buffer = new byte[8 * 1024];
             int bytesRead;
             while ((bytesRead = apkStream.read(buffer)) != -1) {
                 apkOutputStream.write(buffer, 0, bytesRead);
@@ -99,30 +128,15 @@ public class StandUpInstallActivity extends AppCompatActivity {
             openFileIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             openFileIntent.setData(apkUri);
             startActivity(openFileIntent);
+        } else {
+            Intent install = new Intent(Intent.ACTION_VIEW);
+            install.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            install.setDataAndType(Uri.parse("file://" + apkFile.toString()), "application/vnd.android.package-archive");
+            startActivity(install);
+            finish();
+            startActivity(getIntent());
         }
-//        try {
-//            File apkFile;
-//            try (OutputStream output = new FileOutputStream(apkFile)) {
-//                byte[] buffer = new byte[4 * 1024];
-//                int read
-//
-//
-//            }
-//        }
-//        File apkFile;
-//
-//        InputStream apkStream = null;
-//        try {
-//            apkStream = getAssets().open("briar.apk");
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        FileUtils.copyInputStreamToFile(apkStream, apkFile);
-//
-//        Intent intent2 = new Intent(Intent.ACTION_VIEW);
-//        intent.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive");
-//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        startActivity(intent2);
+
+
     }
 }

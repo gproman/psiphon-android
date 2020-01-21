@@ -72,11 +72,15 @@
     <string name="serval_name">Serval</string>
     <string name="psiphonmesh_name">Psiphon Mesh</string>
     <string name="meshenger_name">Meshenger</string>
+    <string name="briar_package">org.briarproject.briar.android</string>
+    <string name="serval_package">org.servalproject</string>
+    <string name="meshenger_package">d.d.meshenger</string>
     <string name="briar_blurb">Briar is a free peer-to-peer messaging app that works over bluetooth. No internet connection is required to share news and messages with those around you.</string>
     <string name="serval_blurb">Serval is a free peer-to-peer messaging app that works with or without Internet access or cellular data to send text and images.</string>
     <string name="psiphonmesh_blurb">Psiphon Mesh enables peer-to-peer transmission of data and information during an internet shutdown.</string>
     <string name="meshenger_blurb">Meshenger allows voice and video calls without any server or Internet access.</string>
     <string name="install">INSTALL</string>
+    <string name="open">OPEN</string>
     <string name="installed_flag">Installed</string>
     <string name="ready_to_install_flag">Ready to Install</string>
     <string name="standup_button">StandUp</string>
