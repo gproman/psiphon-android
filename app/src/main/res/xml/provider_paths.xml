@@ -13,7 +13,7 @@
     <external-cache-path
         name="external_cache"
         path="." />
-    <files-path
-        name="files"
-        path="." />
+<!--    <files-path-->
+<!--        name="files"-->
+<!--        path="." />-->
 </paths>

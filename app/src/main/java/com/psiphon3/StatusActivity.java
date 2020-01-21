@@ -106,72 +106,74 @@ public class StatusActivity
 
         restoreSponsorTab();
 
-        if(haveStoragePermission()) {
-            downloadBriar();
-        }
-    }
-
-    public  boolean haveStoragePermission() {
-        if (Build.VERSION.SDK_INT >= 23) {
-            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_GRANTED) {
-                return true;
-            } else {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1234);
-                return false;
-            }
-        }
-        else { //you dont need to worry about these stuff below api level 23
-            return true;
-        }
-    }
-
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (grantResults[0] == PackageManager.PERMISSION_GRANTED && requestCode == 1234) {
-            downloadBriar();
-        }
-    }
-
-
-    public void downloadBriar() {
-        DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-        String destination = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/";
-        String fileName = "your_app.apk";
-        destination += fileName;
-        final Uri uri = Uri.parse("file://" + destination);
-
-        File file = new File(destination);
-        if (file.exists())
-            file.delete();
-
-        DownloadManager.Request request = new DownloadManager.Request(Uri.parse("https://briarproject.org/apk/briar.apk"));
-        request.setDestinationUri(uri);
-        dm.enqueue(request);
-
-        final String finalDestination = destination;
-        final BroadcastReceiver onComplete = new BroadcastReceiver() {
-            public void onReceive(Context ctxt, Intent intent) {
-                unregisterReceiver(this);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    Uri contentUri = FileProvider.getUriForFile(ctxt, "com.psiphon3.UpgradeFileProvider", new File(finalDestination));
-                    Intent openFileIntent = new Intent(Intent.ACTION_VIEW);
-                    openFileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    openFileIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    openFileIntent.setData(contentUri);
-                    startActivity(openFileIntent);
-                } else {
-                    Intent install = new Intent(Intent.ACTION_VIEW);
-                    install.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    install.setDataAndType(uri,
-                            "application/vnd.android.package-archive");
-                    startActivity(install);
-                }
-            }
-        };
-        registerReceiver(onComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+//        if(haveStoragePermission()) {
+//            downloadBriar();
+//        }
+//    }
+//
+//    public  boolean haveStoragePermission() {
+//        if (Build.VERSION.SDK_INT >= 23) {
+//            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+//                    == PackageManager.PERMISSION_GRANTED) {
+//                return true;
+//            } else {
+//                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1234);
+//                return false;
+//            }
+//        }
+//        else { //you dont need to worry about these stuff below api level 23
+//            return true;
+//        }
+//    }
+//
+//
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//        if (grantResults[0] == PackageManager.PERMISSION_GRANTED && requestCode == 1234) {
+//            downloadBriar();
+//        }
+//    }
+//
+//
+//    public void downloadBriar() {
+//        DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+//        String destination = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/";
+//        String destination = toString(getFilesDir());
+//                //Returns a file, not a string.  Apparently this (might) return the app storage directory.
+//        String fileName = "your_app.apk";
+//        destination += fileName;
+//        final Uri uri = Uri.parse("file://" + destination);
+//
+//        File file = new File(destination);
+//        if (file.exists())
+//            file.delete();
+//
+//        DownloadManager.Request request = new DownloadManager.Request(Uri.parse("https://briarproject.org/apk/briar.apk"));
+//        request.setDestinationUri(uri);
+//        dm.enqueue(request);
+//
+//        final String finalDestination = destination;
+//        final BroadcastReceiver onComplete = new BroadcastReceiver() {
+//            public void onReceive(Context ctxt, Intent intent) {
+//                unregisterReceiver(this);
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//                    Uri contentUri = FileProvider.getUriForFile(ctxt, "com.psiphon3.UpgradeFileProvider", new File(finalDestination));
+//                    Intent openFileIntent = new Intent(Intent.ACTION_VIEW);
+//                    openFileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//                    openFileIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                    openFileIntent.setData(contentUri);
+//                    startActivity(openFileIntent);
+//                } else {
+//                    Intent install = new Intent(Intent.ACTION_VIEW);
+//                    install.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                    install.setDataAndType(uri,
+//                            "application/vnd.android.package-archive");
+//                    startActivity(install);
+//                }
+//            }
+//        };
+//        registerReceiver(onComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
     }
 
     private void preventAutoStart() {

@@ -791,8 +791,8 @@ public abstract class MainBase {
 
         public void onStandUpClick(View v) {
 //            startActivityForResult(new Intent(this, StandUpMainActivity.class), REQUEST_CODE_PREFERENCE);
-            Intent standUpIntent = new Intent(this, StandUpMainActivity.class);
-            startActivity(standUpIntent);
+            Intent browserIntent = new Intent(this, StandUpMainActivity.class);
+            startActivity(browserIntent);
         }
 
         private final AdapterView.OnItemSelectedListener regionSpinnerOnItemSelected = new AdapterView.OnItemSelectedListener() {
