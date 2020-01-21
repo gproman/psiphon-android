@@ -60,16 +60,19 @@ public class StandUpInstallActivity extends AppCompatActivity {
 //        Toast.makeText(this, intent.getStringExtra("name") + " installing...", Toast.LENGTH_LONG).show();
 //
 
-        String filename;
+        String filename = null;
         switch (intent.getStringExtra("name")) {
             case "Briar":
                 filename = "/briar.apk";
                 break;
-            case "FireChat":
+            case "Serval":
                 filename = "/firechat.apk";
                 break;
             case "Psiphon Mesh":
                 filename = "/psiphonmesh.apk";
+                break;
+            case "Meshenger":
+                filename = "/meshenger.apk";
                 break;
         }
 

@@ -18,11 +18,13 @@ public class StandUpMainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        numApps = 3;
+        numApps = 4;
         apps = new StandUpAppInfo[numApps];
         apps[0] = new StandUpAppInfo(getString(R.string.briar_name), R.drawable.briar, false, getString(R.string.briar_blurb));
-        apps[1] = new StandUpAppInfo(getString(R.string.firechat_name), R.drawable.firechat, false, getString(R.string.firechat_blurb));
+        apps[1] = new StandUpAppInfo(getString(R.string.serval_name), R.drawable.serval, false, getString(R.string.serval_blurb));
         apps[2] = new StandUpAppInfo(getString(R.string.psiphonmesh_name), R.drawable.psiphonmesh, false, getString(R.string.psiphonmesh_blurb));
+        apps[3] = new StandUpAppInfo(getString(R.string.meshenger_name), R.drawable.meshenger, false, getString(R.string.meshenger_blurb));
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.stand_up_main_activity);
         simpleGrid = (GridView) findViewById(R.id.simpleGridView); // init GridView
