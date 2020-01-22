@@ -2,10 +2,7 @@ package com.psiphon3.psiphonlibrary;
 
 
 import android.content.Intent;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -13,22 +10,18 @@ import android.widget.GridView;
 
 import com.psiphon3.R;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 public class StandUpMainActivity extends AppCompatActivity {
 
     GridView simpleGrid;
     int numApps;
     StandUpAppInfo[] apps;
+    PackageManager packageManager;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onResume() {
         numApps = 4;
         apps = new StandUpAppInfo[numApps];
-        PackageManager packageManager = getPackageManager();
+        packageManager = getPackageManager();
         apps[0] = new StandUpAppInfo(
                 getString(R.string.briar_name),
                 R.drawable.briar,
@@ -54,7 +47,7 @@ public class StandUpMainActivity extends AppCompatActivity {
                 getString(R.string.meshenger_blurb),
                 getString(R.string.meshenger_package));
 
-        super.onCreate(savedInstanceState);
+        super.onResume();
         setContentView(R.layout.stand_up_main_activity);
         simpleGrid = (GridView) findViewById(R.id.simpleGridView); // init GridView
         // Create an object of StandUpCustomAdapter and set Adapter to GirdView
@@ -85,3 +78,5 @@ public class StandUpMainActivity extends AppCompatActivity {
         }
     }
 }
+
+

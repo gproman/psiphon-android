@@ -1,36 +1,24 @@
 package com.psiphon3.psiphonlibrary;
 
 import android.annotation.SuppressLint;
-import android.app.DownloadManager;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.content.res.AssetManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.psiphon3.R;
-
-import org.zirco.utils.IOUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 
 public class StandUpInstallActivity extends AppCompatActivity {
 
@@ -39,7 +27,6 @@ public class StandUpInstallActivity extends AppCompatActivity {
     TextView appBlurb;
 
 
-    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,7 +62,7 @@ public class StandUpInstallActivity extends AppCompatActivity {
                 output = "servalproject.apk";
                 break;
             case "Psiphon Mesh":
-                output = "psiphon_mesh.apk";
+                output = "psiphonmesh.apk";
                 break;
             case "Meshenger":
                 output = "meshenger.apk";
@@ -95,8 +82,6 @@ public class StandUpInstallActivity extends AppCompatActivity {
 
         if (StandUpMainActivity.isPackageInstalled(intent.getStringExtra("package"), packageManager)) {
             openMeshApp(intent.getStringExtra("package"));
-            finish();
-            startActivity(getIntent());
             return;
         }
         String appName = intent.getStringExtra("name");
@@ -133,10 +118,21 @@ public class StandUpInstallActivity extends AppCompatActivity {
             install.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             install.setDataAndType(Uri.parse("file://" + apkFile.toString()), "application/vnd.android.package-archive");
             startActivity(install);
-            finish();
-            startActivity(getIntent());
         }
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();   // This runs the base class's onResume() first, then your own code.
+        // Some classes can be declared as abstract
+        Intent intent = getIntent();
+        Button installButton = (Button) findViewById(R.id.installButton);
 
+        PackageManager packageManager = getApplicationContext().getPackageManager();
+            if (StandUpMainActivity.isPackageInstalled(intent.getStringExtra("package"), packageManager)) {
+            installButton.setText(R.string.open);
+        } else {
+            installButton.setText(R.string.install);
+        }
     }
 }
