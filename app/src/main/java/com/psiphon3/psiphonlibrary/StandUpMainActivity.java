@@ -3,6 +3,7 @@ package com.psiphon3.psiphonlibrary;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,6 +17,12 @@ public class StandUpMainActivity extends AppCompatActivity {
     int numApps;
     StandUpAppInfo[] apps;
     PackageManager packageManager;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.stand_up_main_activity); // BELONGS IN ON_CREATE()
+    }
 
     @Override
     protected void onResume() {
@@ -48,16 +55,12 @@ public class StandUpMainActivity extends AppCompatActivity {
                 getString(R.string.meshenger_package));
 
         super.onResume();
-        setContentView(R.layout.stand_up_main_activity);
         simpleGrid = (GridView) findViewById(R.id.simpleGridView); // init GridView
-        // Create an object of StandUpCustomAdapter and set Adapter to GirdView
         StandUpCustomAdapter standUpCustomAdapter = new StandUpCustomAdapter(getApplicationContext(), apps);
         simpleGrid.setAdapter(standUpCustomAdapter);
-        // implement setOnItemClickListener event on GridView
         simpleGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // set an Intent to Another Activity
                 Intent intent = new Intent(StandUpMainActivity.this, StandUpInstallActivity.class);
                 intent.putExtra("image", apps[position].icon); // put image data in Intent
                 intent.putExtra("name", apps[position].name);
